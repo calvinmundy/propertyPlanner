@@ -4,36 +4,36 @@ import {FinancialUtil} from "./FinancialUtil";
 @Component({
 	selector: 'financialCalc',
 	template: `
-		Total value: <input type="text" [(ngModel)]="totalValue"/>
+		Total value: <input type="number" [(ngModel)]="totalValue"/>
 		<br>
-		Deposit: <input type="text" [(ngModel)]="depositValue"/>
+		Deposit: <input type="number" [(ngModel)]="depositValue"/>
 		<br>
-		Years: <input type="text" [(ngModel)]="term"/>
+		Years: <input type="number" [(ngModel)]="term"/>
 		<br>
-		Interest rate: <input type="text" [(ngModel)]="interestRate"/>
+		Interest rate: <input type="number" [(ngModel)]="interestRate"/>
 		<br>
-		Levies and rates: <input type="text" [(ngModel)]="levies"/>
+		Levies and rates: <input type="number" [(ngModel)]="levies"/>
 		<br>
-		Rent rate: <input type="text" [(ngModel)]="rent"/>
+		Rent rate: <input type="number" [(ngModel)]="rent"/>
 		<br>
 		<input type="button" value="click" (click)="calculateRepayment()"/>
 		<br>
 		<br>
-		Monthly repayment: <input type="text" value={{monthlyRepayment}}>
+		Monthly repayment: <input type="number" value={{monthlyRepayment}}>
 		<br>
-		Total interest: <input type="text" value={{totalInterest}}>
+		Total interest: <input type="number" value={{totalInterest}}>
 		<br>
-		TotalCost: <input type="text" value={{totalCost}}>
-		<br>
-		<br>
-		Total monthly cost (worst): <input type="text" value={{totalMonthlyWorst}}>
-		<br>
-		Total monthly cost (best): <input type="text" value={{totalMonthlyBest}}>
+		TotalCost: <input type="number" value={{totalCost}}>
 		<br>
 		<br>
-		Total cost after term (worst): <input type="text" value={{totalCostAfterTermWorst}}>
+		Total monthly cost (worst): <input type="number" value={{totalMonthlyWorst}}>
 		<br>
-		Total cost after term (best): <input type="text" value={{totalCostAfterTermBest}}>
+		Total monthly cost (best): <input type="number" value={{totalMonthlyBest}}>
+		<br>
+		<br>
+		Total cost after term (worst): <input type="number" value={{totalCostAfterTermWorst}}>
+		<br>
+		Total cost after term (best): <input type="number" value={{totalCostAfterTermBest}}>
 		`
 })
 
@@ -56,13 +56,14 @@ export class FinancialCalculatorComponent {
 	totalCostAfterTermBest:number = 0;
 
 	calculateRepayment():void {
+
 		this.monthlyRepayment = FinancialUtil.getMonthlyRepayment(this.totalValue, this.interestRate, this.term, this.depositValue);
 
 		let loanAmount = this.totalValue - this.depositValue;
 		let loanTotal = this.monthlyRepayment * 12 * this.term;
 
 		this.totalInterest = loanTotal - loanAmount;
-		this.totalCost = loanTotal + parseInt(this.depositValue);
+		this.totalCost = loanTotal + this.depositValue;
 
 		this.totalMonthlyWorst = this.monthlyRepayment + this.levies;
 		this.totalMonthlyBest = this.monthlyRepayment + this.levies - this.rent;
