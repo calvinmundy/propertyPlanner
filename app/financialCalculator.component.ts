@@ -34,6 +34,8 @@ import {FinancialUtil} from "./FinancialUtil";
 		Total cost after term (worst): <input type="number" value={{totalCostAfterTermWorst}}>
 		<br>
 		Total cost after term (best): <input type="number" value={{totalCostAfterTermBest}}>
+		<br>
+		Total cost after term (average): <input type="number" value={{totalCostAfterTermAverage}}>
 		`
 })
 
@@ -54,13 +56,14 @@ export class FinancialCalculatorComponent {
 
 	totalCostAfterTermWorst:number = 0;
 	totalCostAfterTermBest:number = 0;
+	totalCostAfterTermAverage:number: 0;
 
 	calculateRepayment():void {
 
 		this.monthlyRepayment = FinancialUtil.getMonthlyRepayment(this.totalValue, this.interestRate, this.term, this.depositValue);
 
-		let loanAmount = this.totalValue - this.depositValue;
-		let loanTotal = this.monthlyRepayment * 12 * this.term;
+		let loanAmount:number = this.totalValue - this.depositValue;
+		let loanTotal:number = this.monthlyRepayment * 12 * this.term;
 
 		this.totalInterest = loanTotal - loanAmount;
 		this.totalCost = loanTotal + this.depositValue;
@@ -70,5 +73,6 @@ export class FinancialCalculatorComponent {
 
 		this.totalCostAfterTermWorst = this.totalMonthlyWorst * 12 * this.term + this.depositValue;
 		this.totalCostAfterTermBest = this.totalMonthlyBest * 12 * this.term + this.depositValue;
+		this.totalCostAfterTermAverage = (this.totalCostAfterTermWorst + this.totalCostAfterTermBest) / 2;
 	}
 }
